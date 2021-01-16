@@ -65,7 +65,7 @@ def save(file_url, title):
     photo_req = requests.get(file_url)
     if photo_req.status_code == 200:
         # the split might be dangerous in case of titles containing a dot
-        open('memes/' + title.split('.')[0] + '.jpg', 'wb').write(photo_req.content)
+        open('memes_dir/' + title.split('.')[0] + '.jpg', 'wb').write(photo_req.content)
         print("saved")
 
 def message(payload):
