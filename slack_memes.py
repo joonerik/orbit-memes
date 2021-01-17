@@ -18,30 +18,29 @@ load_dotenv(dotenv_path=env_path)
 client = slack.WebClient(token = os.environ['BOT_SLACK_TOKEN'])
 user_client = slack.WebClient(token = os.environ['USER_SLACK_TOKEN'])
 app_client = slack.WebClient(token = os.environ['APP_SLACK_TOKEN'])
+saved_files_id = []
 
 # retrieve list of already downloaded memes
 def load_memes_id_txt():
     # TODO: load/save the list instead, prob shorter process time but cba atm
     file = open('memes_id.txt', 'r')
-    saved_files_id = []
     for id in file:
         saved_files_id.append(id[:-1])
     file.close()
 
 def getChannelID(channel_name):
-    channels = ast.literal_eval(str(client.conversations_list()))
-    for channel in channels['channels']:
+    response = ast.literal_eval(str(client.conversations_list()))
+    for channel in response['channels']:
         if channel['name'] == channel_name:
             channel_id = channel['id']
     return channel_id
 
 def fetch():
     general_channel = getChannelID('orbit-memes') 
-    str_files = str(client.files_list(channel=general_channel))
-    dict_files = ast.literal_eval(str_files)
+    files = ast.literal_eval(str(client.files_list(channel=general_channel)))
 
     file_txt = open('memes_id.txt', 'a')
-    for file in dict_files["files"]:
+    for file in files["files"]:
         if file["id"] not in saved_files_id:
             # somehow the shared property switches on and off.
             # user_client.files_revokePublicURL(file=file["id"])
