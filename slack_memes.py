@@ -19,14 +19,14 @@ client = slack.WebClient(token = os.environ['BOT_SLACK_TOKEN'])
 user_client = slack.WebClient(token = os.environ['USER_SLACK_TOKEN'])
 app_client = slack.WebClient(token = os.environ['APP_SLACK_TOKEN'])
 
-# general_channel = 'C0BCSRVAQ'
 # retrieve list of already downloaded memes
-
-# file = open('memes_id.txt', 'r')
-# saved_files_id = []
-# for id in file:
-#     saved_files_id.append(id[:-1])
-# file.close()
+def load_memes_id_txt():
+    # TODO: load/save the list instead, prob shorter process time but cba atm
+    file = open('memes_id.txt', 'r')
+    saved_files_id = []
+    for id in file:
+        saved_files_id.append(id[:-1])
+    file.close()
 
 def getChannelID(channel_name):
     channels = ast.literal_eval(str(client.conversations_list()))
@@ -73,7 +73,6 @@ def correct_url(file_url, title):
 def save(file_url, title):
     photo_req = requests.get(file_url)
     if photo_req.status_code == 200:
-        # the split might be dangerous in case of titles containing a dot
         open('memes_dir/' + title.split('.')[0] + '.jpg', 'wb').write(photo_req.content)
         print("saved")
 
@@ -84,6 +83,6 @@ def message(payload):
     text = event.get('text')
 
     # client.chat_postMessage(channel='#general', text=text)
-    files = client.files_list(channel='general')
 
+# load_memes_id_txt()
 # fetch()
