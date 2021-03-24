@@ -10,11 +10,6 @@ from slack_bolt import App
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
 
-# app = App(
-#     token=os.environ.get("BOT_SLACK_TOKEN"),
-#     signing_secret=os.environ.get("APP_SIGNING_SECRET")
-# )
-
 client = slack.WebClient(token = os.environ['BOT_SLACK_TOKEN'])
 user_client = slack.WebClient(token = os.environ['USER_SLACK_TOKEN'])
 app_client = slack.WebClient(token = os.environ['APP_SLACK_TOKEN'])
@@ -37,14 +32,14 @@ def getChannelID(channel_name):
 
 def fetch():
     general_channel = getChannelID('orbit-memes') 
-    files = ast.literal_eval(str(client.files_list(channel=general_channel)))
+    files = ast.literal_eval(str(user_client.files_list(channel=general_channel)))
 
     file_txt = open('memes_id.txt', 'a')
     for file in files["files"]:
         if file["id"] not in saved_files_id:
             # somehow the shared property switches on and off.
-            # user_client.files_revokePublicURL(file=file["id"])
-            user_client.files_sharedPublicURL(file=file["id"])
+            user_client.files_revokePublicURL(file=file["id"])
+            # user_client.files_sharedPublicURL(file=file["id"])
 
             str_public_file = str(user_client.files_info(file=file["id"]))
             public_file = ast.literal_eval(str_public_file)
@@ -83,5 +78,5 @@ def message(payload):
 
     # client.chat_postMessage(channel='#general', text=text)
 
-# load_memes_id_txt()
-# fetch()
+load_memes_id_txt()
+fetch()
