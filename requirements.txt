@@ -1,0 +1,6 @@
+matplotlib==3.3.2
+requests==2.24.0
+slack_bolt==1.2.1
+Pillow==8.1.2
+python-dotenv==0.15.0
+slackclient==2.9.3
