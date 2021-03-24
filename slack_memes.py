@@ -38,8 +38,8 @@ def fetch():
     for file in files["files"]:
         if file["id"] not in saved_files_id:
             # somehow the shared property switches on and off.
-            user_client.files_revokePublicURL(file=file["id"])
-            # user_client.files_sharedPublicURL(file=file["id"])
+            # user_client.files_revokePublicURL(file=file["id"])
+            user_client.files_sharedPublicURL(file=file["id"])
 
             str_public_file = str(user_client.files_info(file=file["id"]))
             public_file = ast.literal_eval(str_public_file)
